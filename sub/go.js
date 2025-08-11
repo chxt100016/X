@@ -17,15 +17,7 @@ export default {
     }
 
     if (keywords.length === 0) {
-      const { selectedUrl } = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'selectedUrl',
-          message: 'Which URL do you want to open?',
-          choices: urls.map(item => ({ name: `${item.tags.join(', ')} (${item.url})`, value: item.url })),
-        },
-      ]);
-      await open(selectedUrl);
+      console.log(chalk.yellow('Please provide keywords to search for URLs.'));
       return;
     }
 

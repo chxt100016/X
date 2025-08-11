@@ -10,7 +10,6 @@ import { fileURLToPath, pathToFileURL } from 'url';
 // --- Setup global context ---
 const userHome = process.env.HOME || process.env.USERPROFILE;
 const dbPath = path.join(userHome, '.x-go-urls.json');
-console.log(dbPath);
 const spinner = ora({ text: 'Processing...', stream: process.stdout });
 
 // --- Main Function ---
