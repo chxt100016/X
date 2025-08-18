@@ -9,16 +9,16 @@ import { fileURLToPath, pathToFileURL } from 'url';
 
 // --- Setup global context ---
 const userHome = process.env.HOME || process.env.USERPROFILE;
-const dbPath = path.join(userHome, '.x-go-urls.json');
+const configPath = path.join(userHome, '.x-config.json');
 const spinner = ora({ text: 'Processing...', stream: process.stdout });
 
 // --- Main Function ---
 async function main() {
   // 1. Initialize database file
-  await fs.ensureFile(dbPath);
-  const data = await fs.readFile(dbPath, 'utf8');
+  await fs.ensureFile(configPath);
+  const data = await fs.readFile(configPath, 'utf8');
   if (data === '') {
-    await fs.writeJson(dbPath, []);
+    await fs.writeJson(configPath, {});
   }
 
   // 2. Dynamically register subcommands
@@ -39,6 +39,7 @@ async function main() {
 
       const commandModule = await import(fileURL);  // Use file:// URL
       const cmd = commandModule.default;
+      const commandName = cmd.name.split(' ')[0];
 
       program
         .command(cmd.name)
@@ -48,7 +49,9 @@ async function main() {
           const options = args.pop();
           const context = { ...options, spinner };
           spinner.start();
-          await cmd.action(dbPath, ...args, context);
+          const config = await fs.readJson(configPath);
+          const commandConfig = config[commandName] || {};
+          await cmd.action(commandConfig, ...args, context);
         });
     }
   }

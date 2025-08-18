@@ -15,9 +15,11 @@
   "description": "",
   "dependencies": {
     "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
     "commander": "^14.0.0",
     "fs-extra": "^11.3.0",
     "inquirer": "^12.9.0",
+    "mysql2": "^3.14.3",
     "open": "^10.2.0",
     "ora": "^8.2.0"
   }

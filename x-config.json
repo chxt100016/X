@@ -1,0 +1,135 @@
+{
+  "query": {
+    "dataSources": {
+      "ds0": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product"
+      },
+      "ds1": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_01"
+      },
+      "ds2": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_02"
+      },
+      "ds3": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_03"
+      },
+      "ds4": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_04"
+      },
+      "ds5": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_05"
+      },
+      "ds6": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_06"
+      },
+      "ds7": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_07"
+      },
+      "ds8": {
+        "host": "172.30.98.50",
+        "port": 3311,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_08"
+      },
+      "ds9": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_09"
+      },
+      "ds10": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_10"
+      },
+      "ds11": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_11"
+      },
+      "ds12": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_12"
+      },
+      "ds13": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_13"
+      },
+      "ds14": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_14"
+      },
+      "ds15": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_15"
+      },
+       "ds16": {
+        "host": "172.30.98.50",
+        "port": 3312,
+        "user": "pxb7_test2",
+        "password": "pxb7_test2#aCNBbsvj",
+        "database": "pxb7_product_16"
+      }
+    },
+    "tables": {
+      "product": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_ext": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_attr_relation": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_stock": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_edit_log": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_merchant": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_stats": { "sharding": { "column": "product_id", "algorithm": "product_mod" }},
+      "product_promotion_price_snapshot": { "sharding": { "column": "product_id", "algorithm": "product_mod" }}
+    }
+  }
+}

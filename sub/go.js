@@ -6,9 +6,8 @@ import fs from 'fs-extra';
 export default {
   name: 'go [keywords...]',
   description: 'Open a URL based on keywords.',
-  action: async (dbPath, keywords, context) => {
+  action: async (urls, keywords, context) => {
     context.spinner.text = 'Searching...';
-    const urls = await fs.readJson(dbPath);
     context.spinner.stop();
 
     if (urls.length === 0) {
