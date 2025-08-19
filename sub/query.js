@@ -84,9 +84,7 @@ function formatCard(data) {
         const keyPadding = ' '.repeat(Math.max(0, keyColumnWidth - getDisplayLength(keyStr)));
         
         const firstValueLine = valueLines.shift() || '';
-        const line1 = `│ ${keyDisplay}${keyPadding}: ${firstValueLine}`;
-        const line1Padding = ' '.repeat(Math.max(0, cardWidth - getDisplayLength(line1) - 1));
-        console.log(`${line1}${line1Padding}│`);
+        console.log(`${keyDisplay}${keyPadding}: ${firstValueLine}`);
 
         let linesToPrint = valueLines;
         if (linesToPrint.length > 1) {
@@ -97,25 +95,22 @@ function formatCard(data) {
 
         for (const line of linesToPrint) {
             const keyPadding = ' '.repeat(keyColumnWidth);
-            const lineStr = `│ ${keyPadding}  ${line}`;
-            const linePadding = ' '.repeat(Math.max(0, cardWidth - getDisplayLength(lineStr) - 1));
-            console.log(`${lineStr}${linePadding}│`);
+            console.log(`${keyPadding}  ${line}`);
         }
     };
 
-    console.log('┌' + '─'.repeat(cardWidth - 2) + '┐');
-    console.log('│' + ' '.repeat(cardWidth - 2) + '│');
+    console.log('─'.repeat(cardWidth));
 
     for (const [key, value] of Object.entries(data)) {
         printRow(key, value);
     }
 
-    console.log('│' + ' '.repeat(cardWidth - 2) + '│');
-    console.log('└' + '─'.repeat(cardWidth - 2) + '┘');
+    console.log('─'.repeat(cardWidth));
 }
 
 
 export default {
+  alias: 'q',
   name: 'query [table] [id] [columns...]',
   description: 'Query data from database.',
   action: async (config, table, id, columns, context) => {

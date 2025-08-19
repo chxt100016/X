@@ -13,6 +13,7 @@ function formatDate(date) {
 }
 
 export default {
+  alias: 't',
   name: 'timestamp <str>',
   description: 'Convert a timestamp string or number to a different format.',
   action: async (dbPath, str, context) => {

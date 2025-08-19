@@ -8,22 +8,23 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 // --- Setup global context ---
-const userHome = process.env.HOME || process.env.USERPROFILE;
-const configPath = path.join(userHome, '.x-config.json');
+const configPath = path.join(process.cwd(), 'x-config.json');
 const spinner = ora({ text: 'Processing...', stream: process.stdout });
 
 // --- Main Function ---
 async function main() {
   // 1. Initialize database file
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const configPath = path.join(__dirname, 'x-config.json');
+  
   await fs.ensureFile(configPath);
   const data = await fs.readFile(configPath, 'utf8');
   if (data === '') {
-    await fs.writeJson(configPath, {});
+    await fs.writeJson(configPath, []);
   }
 
   // 2. Dynamically register subcommands
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));  // This is the current file path
-  const subcommandsDir = path.join(__dirname, 'sub');  // Path joining
+  const subcommandsDir = path.join(__dirname, 'sub');
   const commandFiles = await fs.readdir(subcommandsDir);
 
   // 3. Init program
@@ -35,23 +36,36 @@ async function main() {
   for (const file of commandFiles) {
     if (file.endsWith('.js')) {
       const filePath = path.join(subcommandsDir, file);
-      const fileURL = pathToFileURL(filePath).href;  // Convert to file:// URL format
+      const fileURL = pathToFileURL(filePath).href;
 
-      const commandModule = await import(fileURL);  // Use file:// URL
+      const commandModule = await import(fileURL);
       const cmd = commandModule.default;
       const commandName = cmd.name.split(' ')[0];
 
-      program
+      const commandBuilder = program
         .command(cmd.name)
-        .description(cmd.description)
-        .action(async (...args) => {
+        .description(cmd.description);
+
+      if (cmd.alias) {
+        commandBuilder.alias(cmd.alias);
+      }
+      
+      commandBuilder.action(async (...args) => {
           const command = args.pop();
           const options = args.pop();
+          const cliArgs = args;
           const context = { ...options, spinner };
           spinner.start();
-          const config = await fs.readJson(configPath);
-          const commandConfig = config[commandName] || {};
-          await cmd.action(commandConfig, ...args, context);
+
+          // Consistently pass the config path or the full config object
+          if (['add', 'go', 'list', 'timestamp', 'json'].includes(commandName)) {
+            // These commands operate on the file or are simple utilities
+            await cmd.action(configPath, ...cliArgs, context);
+          } else {
+            // Commands like 'query' might need the full config object
+            const config = await fs.readJson(configPath);
+            await cmd.action(config, ...cliArgs, context);
+          }
         });
     }
   }

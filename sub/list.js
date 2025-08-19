@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 
 export default {
+  alias: 'l',
   name: 'list',
   description: 'List all stored URLs.',
   action: async (dbPath, context) => {

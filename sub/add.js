@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 
 export default {
+  alias: 'a',
   name: 'add <url> [tags...]',
   description: 'Add a new URL with tags.',
   action: async (dbPath, url, tags, context) => {

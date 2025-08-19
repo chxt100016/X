@@ -4,9 +4,11 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 
 export default {
+  alias: 'g',
   name: 'go [keywords...]',
   description: 'Open a URL based on keywords.',
-  action: async (urls, keywords, context) => {
+  action: async (dbPath, keywords, context) => {
+    const urls = await fs.readJson(dbPath);
     context.spinner.text = 'Searching...';
     context.spinner.stop();
 

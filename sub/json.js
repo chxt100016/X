@@ -36,6 +36,7 @@ const action = (dbPath, str, context) => {
 };
 
 export default {
+  alias: 'j',
   name: 'json <str>',
   description: 'Formats a JSON string with 2-space indentation, handling escaped strings.',
   action,
