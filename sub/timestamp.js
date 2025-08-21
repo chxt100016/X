@@ -20,8 +20,19 @@ export default {
     context.spinner.text = 'Converting timestamp...';
     let finalOutput = '';
 
-    // Check if the input string is purely numeric
-    if (/^\d+$/.test(str)) {
+    if (/^\d{8}$/.test(str) && str.length === 8) { // yyyyMMdd format
+      const year = parseInt(str.substring(0, 4), 10);
+      const month = parseInt(str.substring(4, 6), 10) - 1; // Month is 0-indexed
+      const day = parseInt(str.substring(6, 8), 10);
+      const date = new Date(year, month, day, 0, 0, 0, 0);
+      if (isNaN(date.getTime())) {
+        context.spinner.stop();
+        console.error(chalk.red(`Invalid date format: ${str}`));
+        return;
+      }
+      finalOutput = date.getTime().toString();
+    } else if (/^\d+$/.test(str)) {
+      // Check if the input string is purely numeric
       const num = parseInt(str, 10);
       // If length is <= 11, assume seconds. Otherwise, milliseconds.
       const date = str.length <= 11 ? new Date(num * 1000) : new Date(num);

@@ -8,8 +8,22 @@ async function queryDatabase(connectionConfig, sql, params) {
   return rows;
 }
 
+function getTableName(config, tableOrAlias) {
+  const tables = config.query.tables;
+  if (tables[tableOrAlias]) {
+    return tableOrAlias;
+  }
+  for (const tableName in tables) {
+    if (tables[tableName].alias === tableOrAlias) {
+      return tableName;
+    }
+  }
+  throw new Error(`Table or alias not found: ${tableOrAlias}`);
+}
+
 function getDataSource(config, table, productId) {
-  const tableConfig = config.tables[table];
+  const tableName = getTableName(config, table);
+  const tableConfig = config.query.tables[tableName];
   if (!tableConfig || !tableConfig.sharding) {
     throw new Error(`Missing sharding configuration for table: ${table}`);
   }
@@ -23,14 +37,14 @@ function getDataSource(config, table, productId) {
   const mod = parseInt(productId.toString().slice(-4)) % 16 + 1;
   const dataSourceName = `ds${mod}`;
   
-  const dataSource = config.dataSources[dataSourceName];
+  const dataSource = config.query.dataSources[dataSourceName];
   if (!dataSource) {
     throw new Error(`DataSource not found for key: ${dataSourceName}`);
   }
-  return dataSource;
+  return { dataSource, shardingKey: mod };
 }
 
-function formatCard(data) {
+function formatCard(data, shardingKey) {
     const cardWidth = 80;
     const keyColumnWidth = 25;
     const valueColumnWidth = cardWidth - keyColumnWidth - 5;
@@ -99,13 +113,17 @@ function formatCard(data) {
         }
     };
 
-    console.log('─'.repeat(cardWidth));
+    const shardingText = ` Sharding Key: ${shardingKey} `;
+    const line = '─'.repeat(cardWidth);
+    const centeredShardingText = line.slice(0, (cardWidth - shardingText.length) / 2) + shardingText + line.slice(((cardWidth - shardingText.length) / 2) + shardingText.length);
+
+    console.log(centeredShardingText);
 
     for (const [key, value] of Object.entries(data)) {
         printRow(key, value);
     }
 
-    console.log('─'.repeat(cardWidth));
+    console.log(centeredShardingText);
 }
 
 
@@ -117,14 +135,15 @@ export default {
     try {
       context.spinner.text = 'Executing query...';
       
-      const dataSource = getDataSource(config, table, id);
+      const tableName = getTableName(config, table);
+      const { dataSource, shardingKey } = getDataSource(config, tableName, id);
 
       let sql;
-      const shardingColumn = config.tables[table].sharding.column;
+      const shardingColumn = config.query.tables[tableName].sharding.column;
       if (columns && columns.length > 0) {
-        sql = `SELECT ${columns.join(', ')} FROM ${table} WHERE ${shardingColumn} = ?`;
+        sql = `SELECT ${columns.join(', ')} FROM ${tableName} WHERE ${shardingColumn} = ?`;
       } else {
-        sql = `SELECT * FROM ${table} WHERE ${shardingColumn} = ?`;
+        sql = `SELECT * FROM ${tableName} WHERE ${shardingColumn} = ?`;
       }
 
       const results = await queryDatabase(dataSource, sql, [id]);
@@ -145,7 +164,7 @@ export default {
             }
         }
       } else {
-        formatCard(results[0]);
+        formatCard(results[0], shardingKey);
       }
 
     } catch (error) {

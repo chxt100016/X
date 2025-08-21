@@ -2,13 +2,16 @@ import open from 'open';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import fs from 'fs-extra';
+import yaml from 'js-yaml';
 
 export default {
   alias: 'g',
   name: 'go [keywords...]',
   description: 'Open a URL based on keywords.',
   action: async (dbPath, keywords, context) => {
-    const urls = await fs.readJson(dbPath);
+    const fileContents = await fs.readFile(dbPath, 'utf8');
+    const data = yaml.load(fileContents);
+    const urls = data.go;
     context.spinner.text = 'Searching...';
     context.spinner.stop();
 

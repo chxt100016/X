@@ -6,21 +6,22 @@ import ora from 'ora';
 import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
+import yaml from 'js-yaml';
 
 // --- Setup global context ---
-const configPath = path.join(process.cwd(), 'x-config.json');
+const configPath = path.join(process.cwd(), 'x-config.yml');
 const spinner = ora({ text: 'Processing...', stream: process.stdout });
 
 // --- Main Function ---
 async function main() {
   // 1. Initialize database file
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const configPath = path.join(__dirname, 'x-config.json');
+  const configPath = path.join(__dirname, 'x-config.yml');
   
   await fs.ensureFile(configPath);
   const data = await fs.readFile(configPath, 'utf8');
   if (data === '') {
-    await fs.writeJson(configPath, []);
+    await fs.writeFile(configPath, yaml.dump({ go: [], query: {} }));
   }
 
   // 2. Dynamically register subcommands
@@ -63,7 +64,7 @@ async function main() {
             await cmd.action(configPath, ...cliArgs, context);
           } else {
             // Commands like 'query' might need the full config object
-            const config = await fs.readJson(configPath);
+            const config = yaml.load(await fs.readFile(configPath, 'utf8'));
             await cmd.action(config, ...cliArgs, context);
           }
         });
