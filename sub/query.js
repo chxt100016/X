@@ -1,5 +1,10 @@
-import mysql from 'mysql2/promise';
+import { program } from 'commander';
 import chalk from 'chalk';
+import fs from 'fs-extra';
+import yaml from 'js-yaml';
+import path from 'path';
+import os from 'os';
+import mysql from 'mysql2/promise';
 
 async function queryDatabase(connectionConfig, sql, params) {
   const connection = await mysql.createConnection(connectionConfig);
@@ -42,6 +47,20 @@ function getDataSource(config, table, productId) {
     throw new Error(`DataSource not found for key: ${dataSourceName}`);
   }
   return { dataSource, shardingKey: mod };
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return dateString; // Return original string if it's not a valid date
+  }
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 function formatCard(data, shardingKey) {
@@ -90,7 +109,11 @@ function formatCard(data, shardingKey) {
     };
 
     const printRow = (key, value) => {
-        const valStr = value !== null && value !== undefined ? value.toString() : 'NULL';
+        let displayValue = value;
+        if (value && (key === 'gmt_create' || key === 'gmt_modified' || key === 'create_time' || key === 'update_time')) {
+            displayValue = formatDate(value);
+        }
+        const valStr = displayValue !== null && displayValue !== undefined ? displayValue.toString() : 'NULL';
         const valueLines = wrap(valStr, valueColumnWidth);
 
         const keyStr = key.toString().slice(0, keyColumnWidth - 2);
@@ -157,17 +180,27 @@ export default {
       if (columns && columns.length > 0) {
         const result = results[0];
         if (columns.length === 1) {
-            console.log(result[columns[0]]);
+            const key = columns[0];
+            let value = result[key];
+            if (value && (key === 'gmt_create' || key === 'gmt_modified' || key === 'create_time' || key === 'update_time')) {
+                value = formatDate(value);
+            }
+            console.log(value);
         } else {
             for (const key of columns) {
-                console.log(`${chalk.green(key)}: ${result[key]}`);
+                let value = result[key];
+                if (value && (key === 'gmt_create' || key === 'gmt_modified' || key === 'create_time' || key === 'update_time')) {
+                    value = formatDate(value);
+                }
+                console.log(`${chalk.green(key)}: ${value}`);
             }
         }
       } else {
         formatCard(results[0], shardingKey);
       }
 
-    } catch (error) {
+    }
+    catch (error) {
       context.spinner.stop();
       console.error(chalk.red('Error:'), error.message);
     }

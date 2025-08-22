@@ -319,6 +319,7 @@ query:
         column: product_id
         algorithm: product_mod
     product_stats:
+      alias: p_s
       sharding:
         column: product_id
         algorithm: product_mod
