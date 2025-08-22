@@ -29,11 +29,11 @@ go:
   - url: http://p-admin-dev.pxb7.internal/
     tags:
       - dev
-      - 后台
+      - admin
   - url: http://p-admin-test.pxb7.internal/
     tags:
       - test
-      - 后台
+      - admin
   - url: http://p-pc-test.pxb7.internal/
     tags:
       - test
@@ -49,7 +49,7 @@ go:
   - url: https://admin-pre.pxb7.internal
     tags:
       - pre
-      - 后台
+      - admin
   - url: https://client-api-pre.pxb7.internal
     tags:
       - pre
@@ -105,7 +105,6 @@ go:
       - pre
       - test
       - es
-      - kibana
       - log
   - url: http://172.30.98.71:5601/
     tags:
@@ -129,13 +128,11 @@ go:
   - url: http://172.30.97.32:5601
     tags:
       - prod
-      - es
-      - kibana
+      - elk
       - log
   - url: https://sls.console.aliyun.com/lognext/project/ack-k8s-app-logs/logsearch/px-k8s-app-logs?slsRegion=cn-hangzhou
     tags:
       - prod
-      - 阿里云
       - sls
       - log
   - url: http://172.30.97.58:8848/nacos
