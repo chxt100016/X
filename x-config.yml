@@ -10,6 +10,10 @@ go:
     tags:
       - wiki
       - 聚合站2
+  - url: https://ecnj5070ng8v.feishu.cn/wiki/EPHzw4pUQiOQSTkJlJSc8MPKnIc
+    tags:
+      - 飞书文档
+      - doc
   - url: http://114.55.87.223/new-backend-group/data-sync.git
     tags:
       - data-sync
