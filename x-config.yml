@@ -179,6 +179,10 @@ go:
       - db
       - sql
       - archery
+  - url: https://kk.pxb7.com/kubernetes/default/namespace/pxb7
+    tags:
+      - prod
+      - k8s
   - url: http://172.30.97.62:30080/
     tags:
       - dev
