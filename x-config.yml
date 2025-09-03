@@ -50,29 +50,31 @@ go:
     tags:
       - test
       - h5
-  - url: https://admin-pre.pxb7.internal
+  - url: http://admin-pre.pxb7.internal
     tags:
       - pre
       - admin
-  - url: https://client-api-pre.pxb7.internal
+  - url: http://client-api-pre.pxb7.internal
     tags:
       - pre
       - 移动端
       - api
-  - url: https://client-api-pre.pxb7.com
+  - url: http://client-api-pre.pxb7.com
     tags:
       - pre
       - 移动端
       - api
-  - url: https://h5-pre.pxb7.internal
+  - url: http://h5-pre.pxb7.internal
     tags:
       - pre
       - h5
-  - url: https://h5-pre.pxb7.com
+      - 内部
+  - url: http://h5-pre.pxb7.com
     tags:
       - pre
       - h5
-  - url: https://pc-pre.pxb7.internal
+      - 公网
+  - url: http://pc-pre.pxb7.internal
     tags:
       - pre
       - pc
