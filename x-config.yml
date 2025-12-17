@@ -54,6 +54,11 @@ go:
     tags:
       - pre
       - admin
+  - url: https://px1818.pxb7.com
+    tags:
+      - prod
+      - admin
+
   - url: http://client-api-pre.pxb7.internal
     tags:
       - pre
@@ -152,6 +157,10 @@ go:
   - url: http://172.30.98.162:8848/nacos/#/configurationManagement?dataId=&group=&appName=&namespace=pxb7_pre&pageSize=&pageNo=&namespaceShowName=pxb7_pre
     tags:
       - pre
+      - nacos
+  - url: https://nn.pxb7.com/nacos/#/configurationManagement?dataId=&group=&appName=&namespace=pxb7_prod&pageSize=&pageNo=&namespaceShowName=pxb7_prod
+    tags:
+      - prod
       - nacos
   - url: http://172.30.97.59:8080/
     tags:
