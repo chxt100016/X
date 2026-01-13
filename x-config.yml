@@ -172,6 +172,11 @@ go:
       - test
       - kafka
       - kafka-ui
+  - url: http://172.30.98.157:18082
+    tags:
+      - pre
+      - kafka
+      - kafka-ui
   - url: http://kafka-ui.pxb7.internal/
     tags:
       - prod
